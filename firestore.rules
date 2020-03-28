@@ -1,0 +1,28 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+  	function isAuthenticated() {
+      return request.auth != null;
+    }
+    function isUserAuthenticated(userID) {
+      return request.auth.uid == userID;
+    }
+    match /commands {
+      match /{cmd} {
+        allow read: if true;
+        allow create: if isAuthenticated() && 
+                         request.auth.uid == request.resource.data.uid;
+      }
+    }
+    match /photos {
+      match /{photoID} {
+        allow read: if true;
+      }
+    }
+    match /counters {
+      match /{counterID} {
+        allow read: if true;
+      }
+    }
+  }
+}

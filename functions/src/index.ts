@@ -1,8 +1,35 @@
 import * as functions from 'firebase-functions';
+import * as admin from 'firebase-admin';
+admin.initializeApp()
+const firestore = admin.firestore();
 
-// // Start writing Firebase Functions
-// // https://firebase.google.com/docs/functions/typescript
-//
-// export const helloWorld = functions.https.onRequest((request, response) => {
-//  response.send("Hello from Firebase!");
-// });
+interface co2Doc {
+  co2: number,
+  temperature: number,
+  timestamp: admin.firestore.FieldValue,
+}
+
+exports.add = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
+  const token = functions.config().raspi.token;
+  if (req.query.token !== token) {
+    res.status(401).send("invalid token");
+    return false;
+  }
+  const location = functions.config().raspi.location;
+  if (!location || !req.query.co2 || !req.query.temperature) {
+    res.status(400).send("bad request. location, co2, temperature are required.");
+    return false;
+  }
+  const doc: co2Doc = {
+    co2: Number(req.query.co2),
+    temperature: Number(req.query.temperature),
+    timestamp: admin.firestore.FieldValue.serverTimestamp()
+  };
+
+  await firestore.collection(`/${location}/`).add(doc);
+  res.status(200).send("OK");
+  return true;
+});
+/*
+https://asia-northeast1-co2signals.cloudfunctions.net/hello?co2=111&temperature=19&token=momo&location=home
+*/

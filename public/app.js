@@ -55,6 +55,7 @@ const app = new Vue({
           },
           {
             label: 'temp',
+            fill: false,
             backgroundColor: '#79f879',
             data: this.temp,
             yAxisID: 'y-axis-2',

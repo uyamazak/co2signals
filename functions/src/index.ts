@@ -30,6 +30,3 @@ exports.add = functions.region('asia-northeast1').https.onRequest(async (req, re
   res.status(200).send("OK");
   return true;
 });
-/*
-https://asia-northeast1-co2signals.cloudfunctions.net/hello?co2=111&temperature=19&token=momo&location=home
-*/

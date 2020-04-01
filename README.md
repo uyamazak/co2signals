@@ -36,7 +36,7 @@ https://github.com/UedaTakeyuki/mh-z19
 
 ## LEDの接続
 
-![GPIO](https://www.raspberrypi.org/documentation/usage/gpio/images/GPIO-Pinout-Diagram-2.png)
+![GPIO](https://github.com/uyamazak/co2signals/blob/master/public/doc/GPIO-Pinout-Diagram-2.png)
 https://www.raspberrypi.org/documentation/usage/gpio/
 
 下記のように接続します。

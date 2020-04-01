@@ -1,0 +1,8 @@
+[Unit]
+Description=co2signals with MH-Z19B
+
+[Service]
+ExecStart=/usr/bin/python3 /opt/co2signals/run.py
+
+[Install]
+WantedBy=multi-user.target

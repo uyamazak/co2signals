@@ -1,0 +1,8 @@
+# センサーから値を取得する間隔の秒数
+CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS = 3
+# APIにデータを送る間隔の秒数
+CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS = 60
+CO2SIGNALS_API_ENABLED = True
+CO2SIGNALS_API_ADD_URL = 'https://yourregion-yourproject.cloudfunctions.net/add'
+CO2SIGNALS_API_TOKEN = 'yourtoken'
+CO2SIGNALS_API_LOCATION = 'home'

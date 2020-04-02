@@ -2,8 +2,12 @@
 二酸化炭素センサー「MH-Z19B」とRaspberry PiとFirebaseを使った、二酸化炭素濃度の計測、記録、表示システムです。
 
 # 必要なもの
+
+## やる気と勢い
+これ。
+
 ## Raspberry Pi本体と周辺機器
-Raspberry Pi 3Bを使用していますが、Zeroなど他のモデルでも問題なさそうです。
+Raspberry Pi 3Bを使用していますが、Zero WHなど他のモデルでも問題なさそうです。
 
 電源、SDカード、キーボード、モニタ、インターネット回線などはもちろん必要です。
 
@@ -14,10 +18,11 @@ Aliexpress、Amazonなどで購入できます。
 
 ジャンパーワイヤを利用する場合はピンヘッダ付きがおすすめです。
 
-## LEDと抵抗
+## LED
 信号機と同じく緑、黃、赤を使用します。
 
-抵抗には念の為、強めの1KΩを使用していますが、330Ωでも大抵のLEDは問題ないと思います。
+## 抵抗 330Ω - 1KΩ
+LEDの種類にもよりますが、抵抗には330Ωが一般的なようです。1KΩは暗めになるので明るい場所では見ずらいかも。
 
 
 ## ブレッドボード、ジャンパーワイヤ （オプション）
@@ -34,24 +39,39 @@ https://github.com/UedaTakeyuki/mh-z19
 
 キャリブレーションなども上記のパッケージで可能ですが説明は省きます。
 
-## LEDの接続
+## LEDと抵抗の接続
 
-![GPIO](https://github.com/uyamazak/co2signals/blob/master/public/doc/GPIO-Pinout-Diagram-2.png)
+![GPIO](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/GPIO-Pinout-Diagram-2.png)
 https://www.raspberrypi.org/documentation/usage/gpio/
 
-下記のように接続します。
+下記のように接続します（LEDと抵抗の順番は逆でも可）。
 
-- GPIO 2 → 緑LED +側
-- GPIO 3 → 黄LED +側
-- GPIO 4 → 赤LED +側
+- GPIO 2 → 緑LED+側 → 緑LED−側 → 抵抗 → Ground
+- GPIO 3 → 黄LED+側 → 緑LED−側 → 抵抗 → Ground
+- GPIO 4 → 赤LED+側 → 緑LED−側 → 抵抗 → Ground
 
 それぞれの-側は6番などの任意のGroundに接続します。ブレッドボードであればまとめてつなげて問題ありません。
 
 GPIO番号はモデルによって異なるかもしれないので確認してください。
 
 # Raspberry Pi の設定
+OSはRasbianで下記のバージョンで動作確認しています。
+
+```
+pi@raspberrypi3b:~ $ cat /etc/debian_version
+9.11
+```
+
+## 必要なPythonパッケージのインストール
+```
+sudo pip3 install gpiozero mh_z19 requests
+```
 
 ## Pythonファイルの配置
+ディレクトリの作成
+```
+sudo mkdir /opt/co2signals
+```
 
 ## systemdの設定
 

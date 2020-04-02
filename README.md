@@ -52,7 +52,7 @@ https://github.com/UedaTakeyuki/mh-z19
 
 ## LEDと抵抗の接続
 
-![GPIO](public/doc/GPIO-Pinout-Diagram-2.png)
+![GPIO](doc/GPIO-Pinout-Diagram-2.png)
 https://www.raspberrypi.org/documentation/usage/gpio/
 
 下記のように接続します（LEDと抵抗の順番は逆でも可）。

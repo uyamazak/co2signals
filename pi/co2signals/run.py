@@ -55,7 +55,7 @@ if __name__ == '__main__':
         if co2 >= 1000:
             on_single_led('red')
 
-        if count % int(CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS / CO2SIGNALS_READ_INTERVAL_SECONDS) is 0:
+        if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
             send_api(co2, temp)
             count = 0
 

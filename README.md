@@ -7,10 +7,10 @@
 - URLでグラフを確認できます
 
 ## 本体
-![co2signals body](public/doc/co2signals_01.jpg)
+![co2signals body](doc/co2signals_01.jpg)
 
 ## グラフ
-![co2signals graph](public/doc/co2signals_02.png)
+![co2signals graph](doc/co2signals_02.png)
 
 # 必要なもの
 

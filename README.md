@@ -3,7 +3,8 @@
 二酸化炭素センサー「MH-Z19B」とRaspberry PiとFirebaseを使った、二酸化炭素濃度の計測、記録、表示システムです。
 
 ## システム概要
-
+- MH-Z19Bで収集したCO2の濃度により三色のLEDを点灯させます
+- URLでグラフを確認できます
 
 ## 本体
 ![co2signals body](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_01.jpg)
@@ -14,7 +15,7 @@
 # 必要なもの
 
 ## やる気と勢い
-これ。
+これ
 
 ## Raspberry Pi本体と周辺機器
 Raspberry Pi 3Bを使用していますが、Zero WHなど他のモデルでも問題なさそうです。
@@ -70,21 +71,63 @@ pi@raspberrypi3b:~ $ cat /etc/debian_version
 ```
 
 ## 必要なPythonパッケージのインストール
+ソースコードをダウンロード
+```
+git clone https://github.com/uyamazak/co2signals.git
+cd co2signals
+```
+
 ```
 sudo pip3 install gpiozero mh_z19 requests
 ```
 
 ## Pythonファイルの配置
-ディレクトリの作成
+
 ```
-sudo mkdir /opt/co2signals
+# ディレクトリの作成
+sudo mkdir /opt/co2signals/
+
+# 実行ファイルをコピー
+sudo cp -i src/run.py /opt/co2signals/run.py
+
+# 設定ファイルをコピー、編集
+sudo cp -i src/config.py.sample /opt/co2signals/config.py
+sudo vim /opt/co2signals/config.py
+
+# 設定ファイルを編集
+sudo vim /opt/co2signals/config.py
+
+```
+
+## 実行
+
+```
+sudo /usr/bin/python3 /opt/co2signals/run.py
 ```
 
 ## systemdの設定
+バックグラウンドで常時起動させる場合はsystemdを使用します。
+```
+# unitファイルをコピー
+sudo cp -i service/co2signals.service /etc/systemd/system/co2signals.service
 
+# 有効化
+sudo systemctl enable co2signals
+
+# 起動
+sudo systemctl start co2signals
+
+# 終了
+sudo systemctl stop co2signals
+```
 ## Firebase Functionの環境変数の設定
+
+`/opt/co2signals/config.py`に設定した値と同じにします。
 ```
 firebase functions:config:set \
   raspi.token="yourtoken" \
   raspi.location="home"
 ```
+
+# デプロイ
+FirebaseはGitHubとGoogle Cloud Build使ってやってます。

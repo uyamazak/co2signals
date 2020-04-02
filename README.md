@@ -5,7 +5,7 @@
 ![co2signals body](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_01.jpg)
 
 グラフ
-![co2signals graph](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_02.jpg)
+![co2signals graph](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_02.png)
 # 必要なもの
 
 ## やる気と勢い

@@ -7,10 +7,10 @@
 - URLでグラフを確認できます
 
 ## 本体
-![co2signals body](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_01.jpg)
+![co2signals body](public/doc/co2signals_01.jpg)
 
 ## グラフ
-![co2signals graph](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_02.png)
+![co2signals graph](public/doc/co2signals_02.png)
 
 # 必要なもの
 
@@ -28,6 +28,9 @@ Raspberry Pi 3Bを使用していますが、Zero WHなど他のモデルでも�
 Aliexpress、Amazonなどで購入できます。
 
 ジャンパーワイヤを利用する場合はピンヘッダ付きがおすすめです。
+
+データシート:
+https://www.winsen-sensor.com/d/files/infrared-gas-sensor/mh-z19b-co2-ver1_0.pdf
 
 ## LED
 信号機と同じく緑、黃、赤を使用します。
@@ -49,7 +52,7 @@ https://github.com/UedaTakeyuki/mh-z19
 
 ## LEDと抵抗の接続
 
-![GPIO](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/GPIO-Pinout-Diagram-2.png)
+![GPIO](public/doc/GPIO-Pinout-Diagram-2.png)
 https://www.raspberrypi.org/documentation/usage/gpio/
 
 下記のように接続します（LEDと抵抗の順番は逆でも可）。

@@ -4,7 +4,7 @@
 
 ## システム概要
 - MH-Z19Bで収集したCO2の濃度により三色のLEDを点灯させます
-- URLでグラフを確認できます
+- インターネットからグラフを確認できます（認証機能は未実装）
 
 ## 本体
 ![co2signals body](doc/co2signals_01.jpg)
@@ -81,7 +81,7 @@ cd co2signals
 ```
 
 ```
-sudo pip3 install gpiozero mh_z19 requests
+sudo pip3 install gpiozero mh-z19 requests
 ```
 
 ## Pythonファイルの配置
@@ -123,13 +123,22 @@ sudo systemctl start co2signals
 # 終了
 sudo systemctl stop co2signals
 ```
-## Firebase Functionの環境変数の設定
+## Firebase Functionsの環境変数を設定
+Raspberry Piから送られたデータの保存には、簡易的にtoken認証を行っています。
 
 `/opt/co2signals/config.py`に設定した値と同じにします。
 ```
 firebase functions:config:set \
   raspi.token="yourtoken" \
   raspi.location="home"
+```
+
+## Slack通知
+Incomming WebhookのURLを設定して、1500ppmを超えるとFunctionsからSlackへ投稿します。
+
+```
+firebase functions:config:set \
+  slack.webhook_url="https://hooks.slack.com/services/**********"
 ```
 
 # デプロイ

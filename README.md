@@ -1,6 +1,11 @@
 # co2signals
 二酸化炭素センサー「MH-Z19B」とRaspberry PiとFirebaseを使った、二酸化炭素濃度の計測、記録、表示システムです。
 
+本体
+![co2signals body](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_01.jpg)
+
+グラフ
+![co2signals graph](https://raw.githubusercontent.com/uyamazak/co2signals/master/public/doc/co2signals_02.jpg)
 # 必要なもの
 
 ## やる気と勢い

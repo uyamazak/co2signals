@@ -4,9 +4,9 @@ const chatworkRoomId: string = functions.config()?.chatwork?.room_id ?? '';
 const chatworkApiToken: string = functions.config()?.chatwork?.api_token ?? '';
 
 // https://developer.chatwork.com/ja/endpoint_rooms.html#POST-rooms-room_id-messages
-export async function sendChatWorkApi (co2: number) : Promise<void>{
+export async function sendChatWorkApi (co2: number) : Promise<any>{
   if (!chatworkRoomId || !chatworkApiToken) {
-    return;
+    return Promise.resolve();
   }
   return axios.post(
     `https://api.chatwork.com/v2/rooms/${chatworkRoomId}/messages`,

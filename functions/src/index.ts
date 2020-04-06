@@ -8,7 +8,6 @@ const firestore = admin.firestore();
 const token: string = functions.config().raspi.token;
 const sendMessageThresholdCo2Ppm: number = 1500;
 
-
 interface co2Doc {
   co2: number,
   temperature: number,
@@ -33,7 +32,7 @@ exports.add = functions.region('asia-northeast1').https.onRequest(async (req, re
   };
   await firestore.collection(`/${location}/`).add(doc);
   if (co2 > sendMessageThresholdCo2Ppm) {
-    function handleApiError (error: Error) {
+    function handleApiError (error: Error): void {
       console.log(error);
     }
     await Promise.all(

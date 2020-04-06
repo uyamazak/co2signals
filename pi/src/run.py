@@ -5,6 +5,7 @@ from config import (CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS,
                     CO2SIGNALS_API_LOCATION,
                     CO2SIGNALS_API_TOKEN)
 from datetime import datetime
+from enum import Enum, auto
 from gpiozero import LED
 from time import sleep, time
 import mh_z19
@@ -17,6 +18,41 @@ leds = {
     'yellow': LED(3),
     'red': LED(4)
 }
+
+class Status(Enum):
+    OK = auto()
+    NG = auto()
+
+class Alert:
+    _last_status = None
+    _last_ng_time = None
+    _last_ok_time = None
+    _ok_to_ng = False
+    _ng_to_ok = False
+    _continuous_ng_count = 0
+
+    def __init__(self, alert_interval_sec=60):
+        self._alert_interval_sec = alert_interval_sec
+
+    def check(self, status):
+        if _last_status is Status['OK'] and status is Status['NG']:
+            _ok_to_ng = True
+            _ng_to_ok = False
+            _continuous_ng_count = 1
+        else if _last_status is Status['NG'] and status is Status['OK']:
+            _ok_to_ng = True
+            _ng_to_ok = False
+            _continuous_ng_count = 0
+
+        if _last_status is Status['NG'] and status is Status['NG']:
+            _continuous_ng_count += 1
+
+        if status is Status['OK']:
+            self._last_ok = datetime.now()
+        else if status is Status['NG']:
+            self._last_ng = datetime.now()
+
+        _last_status = status
 
 def on_single_led(on_name):
     for name, led in leds.items():

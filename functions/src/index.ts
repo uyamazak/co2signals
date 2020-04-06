@@ -33,12 +33,15 @@ exports.add = functions.region('asia-northeast1').https.onRequest(async (req, re
   };
   await firestore.collection(`/${location}/`).add(doc);
   if (co2 > sendMessageThresholdCo2Ppm) {
+    function handleApiError (error: Error) {
+      console.log(error);
+    }
     await Promise.all(
       [
-        sendSlackWebhook(co2),
-        sendChatWorkApi(co2)
+        await sendSlackWebhook(co2),
+        await sendChatWorkApi(co2)
       ]
-    );
+    ).catch(handleApiError)
   }
   res.status(200).send("OK");
   return true;

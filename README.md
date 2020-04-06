@@ -133,13 +133,19 @@ firebase functions:config:set \
   raspi.location="home"
 ```
 
-## Slack通知
-Incomming WebhookのURLを設定して、1500ppmを超えるとFunctionsからSlackへ投稿します。
+## Slack & Cahtwork通知
+設定すると1500ppmを超えるとFunctionsから現在のCo2濃度を含むメッセージを投稿します。
 
 ```
 firebase functions:config:set \
-  slack.webhook_url="https://hooks.slack.com/services/**********"
+  slack.webhook_url="https://hooks.slack.com/services/**********" \
+  chatwork.api_token="your_token_here" \
+  chatwork.room_id="room_number_here"
 ```
 
 # デプロイ
-FirebaseはGitHubとGoogle Cloud Build使ってやってます。
+## Firebase
+GitHubのmasterレポジトリへのpushをトリガーとしてGoogle Cloud Build使ってやってます。
+
+## Raspberry Pi
+手と少しのシェルスクリプト

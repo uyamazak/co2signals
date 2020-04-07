@@ -4,13 +4,13 @@ from config import (CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS,
                     CO2SIGNALS_API_ADD_URL,
                     CO2SIGNALS_API_LOCATION,
                     CO2SIGNALS_API_TOKEN)
+from alert import Alert
+from alert.Status import OK, NG
 from datetime import datetime
-from enum import Enum, auto
 from gpiozero import LED
 from time import sleep, time
 import mh_z19
 import requests
-
 
 count = 0
 leds = {
@@ -19,41 +19,6 @@ leds = {
     'red': LED(4)
 }
 
-class Status(Enum):
-    OK = auto()
-    NG = auto()
-
-class Alert:
-    _last_status = None
-    _last_ng_time = None
-    _last_ok_time = None
-    _ok_to_ng = False
-    _ng_to_ok = False
-    _continuous_ng_count = 0
-
-    def __init__(self, alert_interval_sec=60):
-        self._alert_interval_sec = alert_interval_sec
-
-    def check(self, status):
-        if _last_status is Status['OK'] and status is Status['NG']:
-            _ok_to_ng = True
-            _ng_to_ok = False
-            _continuous_ng_count = 1
-        else if _last_status is Status['NG'] and status is Status['OK']:
-            _ok_to_ng = True
-            _ng_to_ok = False
-            _continuous_ng_count = 0
-
-        if _last_status is Status['NG'] and status is Status['NG']:
-            _continuous_ng_count += 1
-
-        if status is Status['OK']:
-            self._last_ok = datetime.now()
-        else if status is Status['NG']:
-            self._last_ng = datetime.now()
-
-        _last_status = status
-
 def on_single_led(on_name):
     for name, led in leds.items():
         if name == on_name:
@@ -61,7 +26,7 @@ def on_single_led(on_name):
         else:
             led.off()
 
-def send_api(co2, temp):
+def send_api(co2, temp, needs_alert=0):
     if CO2SIGNALS_API_ENABLED is False:
         return
     try :
@@ -69,13 +34,15 @@ def send_api(co2, temp):
             'co2': co2,
             'temperature': temp,
             'location': CO2SIGNALS_API_LOCATION,
-            'token' : CO2SIGNALS_API_TOKEN
+            'token' : CO2SIGNALS_API_TOKEN,
+            'need_alert': needs_alert
         })
         print(r.text)
     except Exception as e :
         print(e)
 
 if __name__ == '__main__':
+    alert = Alert()
     while True:
         start = time()
         data = mh_z19.read_all()
@@ -91,8 +58,17 @@ if __name__ == '__main__':
         if co2 >= 1000:
             on_single_led('red')
 
+        if co2 > 1500:
+            alert.update(NG)
+        else:
+            alert.update(OK)
+
+        needs_alert = 0
+        if alert.need_alert():
+            needs_alert = 1
+
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
-            send_api(co2, temp)
+            send_api(co2, temp, needs_alert)
             count = 0
 
         count += 1

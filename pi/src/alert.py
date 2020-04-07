@@ -1,10 +1,10 @@
-from enum import Enum, auto
+from enum import Enum
 from time import time
 
 
 class Status(Enum):
-    OK = auto()
-    NG = auto()
+    OK = 1
+    NG = 2
 
 
 class Alert:

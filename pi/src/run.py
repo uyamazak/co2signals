@@ -63,7 +63,7 @@ if __name__ == '__main__':
             alert.update(Status.OK)
 
         needs_alert = 0
-        if alert.need_alert():
+        if alert.needs_alert():
             needs_alert = 1
 
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:

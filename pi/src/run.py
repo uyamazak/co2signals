@@ -4,8 +4,7 @@ from config import (CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS,
                     CO2SIGNALS_API_ADD_URL,
                     CO2SIGNALS_API_LOCATION,
                     CO2SIGNALS_API_TOKEN)
-from alert import Alert
-from alert.Status import OK, NG
+from alert import Alert, Status
 from datetime import datetime
 from gpiozero import LED
 from time import sleep, time
@@ -59,9 +58,9 @@ if __name__ == '__main__':
             on_single_led('red')
 
         if co2 > 1500:
-            alert.update(NG)
+            alert.update(Status.NG)
         else:
-            alert.update(OK)
+            alert.update(Status.OK)
 
         needs_alert = 0
         if alert.need_alert():

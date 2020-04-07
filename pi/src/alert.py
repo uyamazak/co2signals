@@ -69,6 +69,6 @@ class Alert:
 
         return True
 
-    def set_result(self, result: bool) => None:
+    def set_result(self, result: bool) -> None:
         if result:
             self.last_alert_time = time()

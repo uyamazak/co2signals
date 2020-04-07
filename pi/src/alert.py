@@ -27,11 +27,15 @@ class Alert:
         self._continuous_ng_cout_threshold = continuous_ng_threshold or self._continuous_ng_cout_threshold
 
     def __str__(self):
-        return f'''last_status: {self.last_status}\
-        last_ng_time: {self.last_ng_time}\
-        last_alert_time: {self.last_alert_time}\
-        continuous_ng_count: {self.continuous_ng_count}\
-        needs_alert: {self.needs_alert()}'''
+        return '''last_status: {}\
+        last_ng_time: {}\
+        last_alert_time: {}\
+        continuous_ng_count: {}\
+        needs_alert: {}'''.format(self.last_status,
+                                  self.last_ng_time,
+                                  self.last_alert_time,
+                                  self.continuous_ng_count,
+                                  self.needs_alert())
 
     def update(self, status: Status) -> None:
         if self.last_status is Status['OK'] and status is Status['NG']:

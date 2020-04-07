@@ -4,12 +4,13 @@ from config import (CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS,
                     CO2SIGNALS_API_ADD_URL,
                     CO2SIGNALS_API_LOCATION,
                     CO2SIGNALS_API_TOKEN)
+from alert import Alert
+from alert.Status import OK, NG
 from datetime import datetime
 from gpiozero import LED
 from time import sleep, time
 import mh_z19
 import requests
-
 
 count = 0
 leds = {
@@ -25,7 +26,7 @@ def on_single_led(on_name):
         else:
             led.off()
 
-def send_api(co2, temp):
+def send_api(co2, temp, needs_alert=0):
     if CO2SIGNALS_API_ENABLED is False:
         return
     try :
@@ -33,13 +34,15 @@ def send_api(co2, temp):
             'co2': co2,
             'temperature': temp,
             'location': CO2SIGNALS_API_LOCATION,
-            'token' : CO2SIGNALS_API_TOKEN
+            'token' : CO2SIGNALS_API_TOKEN,
+            'need_alert': needs_alert
         })
         print(r.text)
     except Exception as e :
         print(e)
 
 if __name__ == '__main__':
+    alert = Alert()
     while True:
         start = time()
         data = mh_z19.read_all()
@@ -55,8 +58,17 @@ if __name__ == '__main__':
         if co2 >= 1000:
             on_single_led('red')
 
+        if co2 > 1500:
+            alert.update(NG)
+        else:
+            alert.update(OK)
+
+        needs_alert = 0
+        if alert.need_alert():
+            needs_alert = 1
+
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
-            send_api(co2, temp)
+            send_api(co2, temp, needs_alert)
             count = 0
 
         count += 1

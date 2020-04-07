@@ -14,6 +14,10 @@ interface co2Doc {
   timestamp: admin.firestore.FieldValue,
 }
 
+function handleApiError (error: Error): void {
+  console.log(error);
+}
+
 exports.add = functions.region('asia-northeast1').https.onRequest(async (req, res) => {
   if (req.query.token !== token) {
     res.status(401).send('Invalid token.');
@@ -31,10 +35,10 @@ exports.add = functions.region('asia-northeast1').https.onRequest(async (req, re
     timestamp: admin.firestore.FieldValue.serverTimestamp()
   };
   await firestore.collection(`/${location}/`).add(doc);
-  if (co2 > sendMessageThresholdCo2Ppm) {
-    function handleApiError (error: Error): void {
-      console.log(error);
-    }
+
+  // Co2が閾値を超えていて、かつRaspberry Pi側からneeds_alert=1が来たときだけ送る
+  const needsAlert: number = Number(req.query.needs_alert ?? 0)
+  if (needsAlert && co2 > sendMessageThresholdCo2Ppm) {
     await Promise.all(
       [
         sendSlackWebhook(co2),

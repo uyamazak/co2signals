@@ -34,7 +34,7 @@ def send_api(co2, temp, needs_alert=0) -> bool:
             'temperature': temp,
             'location': CO2SIGNALS_API_LOCATION,
             'token' : CO2SIGNALS_API_TOKEN,
-            'need_alert': needs_alert
+            'needs_alert': needs_alert
         })
         print(r.text)
     except Exception as e :

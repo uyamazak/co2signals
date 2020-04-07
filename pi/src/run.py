@@ -25,7 +25,7 @@ def on_single_led(on_name):
         else:
             led.off()
 
-def send_api(co2, temp, needs_alert=0):
+def send_api(co2, temp, needs_alert=0) -> bool:
     if CO2SIGNALS_API_ENABLED is False:
         return
     try :
@@ -39,6 +39,9 @@ def send_api(co2, temp, needs_alert=0):
         print(r.text)
     except Exception as e :
         print(e)
+        return False
+    else:
+        return True
 
 if __name__ == '__main__':
     alert = Alert()
@@ -65,11 +68,13 @@ if __name__ == '__main__':
         needs_alert = 0
         if alert.needs_alert():
             needs_alert = 1
+
         print(alert)
 
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
-            send_api(co2, temp, needs_alert)
-            alert.set_result(True)
+            api_result = send_api(co2, temp, needs_alert)
+            if needs_alert == 1:
+                alert.set_result(True)
             count = 0
 
         count += 1

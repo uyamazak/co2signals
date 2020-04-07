@@ -65,7 +65,7 @@ if __name__ == '__main__':
         needs_alert = 0
         if alert.needs_alert():
             needs_alert = 1
-        print('needs_alert: {}'.format(alert.needs_alert()))
+        print(alert)
 
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
             send_api(co2, temp, needs_alert)

@@ -37,7 +37,8 @@ exports.add = functions.region('asia-northeast1').https.onRequest(async (req, re
   await firestore.collection(`/${location}/`).add(doc);
 
   // Co2が閾値を超えていて、かつRaspberry Pi側からneeds_alert=1が来たときだけ送る
-  const needsAlert: number = Number(req.query.needs_alert ?? 0)
+  const needsAlert: number = Number(req.query.needs_alert ?? 0);
+  console.log('needsAlert:', needsAlert);
   if (needsAlert && co2 > sendMessageThresholdCo2Ppm) {
     await Promise.all(
       [

@@ -5,6 +5,7 @@
 ## システム概要
 - MH-Z19Bで収集したCO2の濃度により三色のLEDを点灯させます
 - インターネットからグラフを確認できます（認証機能は未実装）
+- 1500ppmを超えるとチャット（Slack、Chatwork）へメッセージを送ります
 
 ## 本体
 ![co2signals body](doc/co2signals_01.jpg)

@@ -69,6 +69,7 @@ if __name__ == '__main__':
 
         if count % int(CO2SIGNALS_API_REQUEST_INTERVAL_SECONDS / CO2SIGNALS_SENSOR_READ_INTERVAL_SECONDS) is 0:
             send_api(co2, temp, needs_alert)
+            alert.set_result(True)
             count = 0
 
         count += 1

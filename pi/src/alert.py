@@ -62,11 +62,13 @@ class Alert:
             return False
 
         if self.last_alert_time is None:
-            self.last_alert_time = time()
             return True
 
         if time() - self.last_alert_time <= self._min_alert_interval_sec:
             return False
 
-        self.last_alert_time = time()
         return True
+
+    def set_result(self, result: bool) => None:
+        if result:
+            self.last_alert_time = time()
